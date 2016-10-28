@@ -1,5 +1,5 @@
 parameters:
-  cluster_size: 1
+  cluster_size: 3
   image_id: 9a79ed6a-a9a5-4dd5-bbfb-72d0d8d46cee
   key_name: default
-  reservation_id: ae428bb5-3627-4867-a5ab-0ed58f23b255
+  reservation_id: e3973e9a-7400-45aa-88f4-b3a200ec3943

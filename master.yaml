@@ -61,7 +61,7 @@ resources:
                 #set -x
                 #exec &> >(tee -a /home/stack/postlog.log)
                 sudo apt-get update
-                sudo apt-get install -y git python-pip vim
+                sudo apt-get install -y git python-pip vim screen
                 sudo apt-get upgrade -y python
                 sudo chown stack:stack /home/stack
                 touch host
@@ -139,6 +139,10 @@ resources:
                 for i in `seq 2 10`; do /opt/stack/nova/bin/nova-manage fixed reserve 192.168.1.$i; done
                 EOF
                 ./stack.sh
+                # Launch a simple webserver on port 6464. Slaves will check this
+                # port: if it listening, they will start to run their slave.sh
+                # script.
+                screen -dm bash -c "python -m SimpleHTTPServer 6464"
             path: /home/stack/start.sh
             permissions: 0755
         runcmd:
@@ -257,7 +261,9 @@ resources:
                         sudo sed -e "s/as needed.$/as needed.\n net.ipv4.conf.all.rp.filter=0\n/" sysctl.conf > sysctl.conf
                         sudo cp -f sysctl.conf /etc/sysctl.conf
                         sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-                        sleep 23m
+                        # Check wait until the controller node has completed his
+                        # devstack installation.
+                        until $(curl --output /dev/null --silent --head --fail http://$master_ip$:6464); do printf '.'; sleep 2; done;
                         ./stack.sh
                     path: /home/stack/start.sh
                     permissions: 0755
