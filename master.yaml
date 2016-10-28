@@ -70,7 +70,7 @@ resources:
                 #sudo su -c "useradd stack -s /bin/bash -m -g cc -G cc"
                 #sudo sed -i '$a stack ALL=(ALL) NOPASSWD: ALL' /etc/sudoers 
                 cd /home/stack
-                git clone https://github.com/openstack-dev/devstack.git -b stable/liberty
+                git clone https://github.com/openstack-dev/devstack.git -b stable/mitaka
                 sudo chown -R stack:stack /home/stack/*
                 cd devstack
                 HOST_IP=$(/sbin/ifconfig eth0 | grep 'inet addr' | cut -d: -f2 | awk '{print $1}')
@@ -193,7 +193,7 @@ resources:
                         #sudo su -c "useradd stack -s /bin/bash -m -g cc -G cc"
                         #sudo sed -i '$a stack ALL=(ALL) NOPASSWD: ALL' /etc/sudoers
                         cd /home/stack
-                        git clone https://github.com/openstack-dev/devstack.git -b stable/liberty
+                        git clone https://github.com/openstack-dev/devstack.git -b stable/mitaka
                         sudo chown -R stack:stack /home/stack/*
                         cd devstack
                         SERVICE_HOST=$master_ip$
